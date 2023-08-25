@@ -10,16 +10,13 @@ dotenv.config({path: './.env'});
 const app = express();
 
 // Middlewares
+app.use(express.static('./public'))
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({
   extended: true
 }));
 
 // Routes
-app.get('/', (req, res) => {
-  res.send("Hello - home page");
-});
-
 app.use('/api/v1/tasks', taskRoutes);
 
 
