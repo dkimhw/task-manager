@@ -4,7 +4,7 @@ import taskRoutes from './routes/tasks.js';
 import connectDB from './db/connect.js';
 import dotenv from 'dotenv';
 import bodyParser from 'body-parser';
-
+import notFound from './middleware/not-found.js';
 
 dotenv.config({path: './.env'});
 const app = express();
@@ -18,7 +18,7 @@ app.use(bodyParser.urlencoded({
 
 // Routes
 app.use('/api/v1/tasks', taskRoutes);
-
+app.use(notFound);
 
 
 // Start server
