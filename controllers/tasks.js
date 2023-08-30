@@ -1,6 +1,7 @@
 
 import Task from '../models/task.js';
 import asyncWrapper from '../middleware/async.js';
+import { createCustomError } from '../errors/custom-error.js';
 
 
 export const getAllTasks = asyncWrapper(async (req, res) => {
@@ -13,16 +14,14 @@ export const createTask = asyncWrapper(async (req, res) => {
   res.status(201).json({task});
 });
 
-export const getTask = asyncWrapper(async (req, res) => {
+export const getTask = asyncWrapper(async (req, res, next) => {
   const { id: taskID } = req.params;
   const task = await Task.findOne({
     _id: taskID
   });
 
   if (!task) {
-    return res.status(404).json({
-      msg: `No task with id: ${taskID}`
-    });
+    return next(createCustomError(`No task with id : ${taskID}`, 404));
   }
 
   res.status(200).json({task});

@@ -5,6 +5,7 @@ import connectDB from './db/connect.js';
 import dotenv from 'dotenv';
 import bodyParser from 'body-parser';
 import notFound from './middleware/not-found.js';
+import errorHandlerMiddleware from './middleware/error-handler.js';
 
 dotenv.config({path: './.env'});
 const app = express();
@@ -19,10 +20,12 @@ app.use(bodyParser.urlencoded({
 // Routes
 app.use('/api/v1/tasks', taskRoutes);
 app.use(notFound);
+app.use(errorHandlerMiddleware);
+
 
 
 // Start server
-const port = 4000;
+const port = process.env.PORT || 4000;
 const connectionStr = `mongodb+srv://${process.env.MONGODB_USERNAME}:${process.env.MONGODB_PASSWORD}@${process.env.MONGODB_SERVER}/${process.env.MONGODB_DB}?retryWrites=true&w=majority`
 
 const start = async () => {
